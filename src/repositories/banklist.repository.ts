@@ -4,7 +4,9 @@ import { InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { v4 as uuid } from 'uuid';
 
 export class BankRepository {
-    constructor() {}
+    constructor() {
+        AWS.config.update({region: 'us-east-1'});
+    }
 
 
     async createBank(createBankDto: CreateBankDto) {
