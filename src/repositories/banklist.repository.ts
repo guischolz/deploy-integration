@@ -62,7 +62,6 @@ AwsConnection()
 
 
     async deleteBankById(id) {
-        let bank;
         try {
             this.AwsConnection();
             const result = await new AWS.DynamoDB.DocumentClient()
@@ -75,10 +74,6 @@ AwsConnection()
             throw new InternalServerErrorException(error);
         }
 
-        if (!bank) {
-            throw new NotFoundException(`Bank with ID "${id}" not found`);
-        }
-
-        return { ok: true, data: bank };
+        return { ok: true };
     }
 }
