@@ -42,7 +42,7 @@ export class BankController {
   }
 
   @Delete('compe/:id')
-  async deleteBank(@Param(':id') id:string, @Res() res: any) {
+  async deleteBank(@Param('id') id:string, @Res() res: any) {
       const bank :any =  await this.appService.deleteBankById(id);
 
       return bank;
