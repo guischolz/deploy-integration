@@ -44,8 +44,18 @@ export class BankController {
   @Delete('compe/:id')
   async deleteBank(@Param('id') id:string, @Res() res: any) {
       const bank :any =  await this.appService.deleteBankById(id);
-
-      return bank;
+      if (bank.ok) {
+      return res.status(HttpStatus.OK).json({
+        ok: true
+    });
+    }
+    else
+    {
+    return res.status(HttpStatus.BAD_REQUEST).json({
+        ok: false,
+        message: 'Error Trying to Delete Bank',
+    });
+    }
   }
 
 }
