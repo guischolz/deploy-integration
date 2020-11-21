@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid';
 export class BankRepository {
     constructor() {}
 
+
     async createBank(createBankDto: CreateBankDto) {
         const newBank = {
             id: uuid(),
@@ -14,7 +15,7 @@ export class BankRepository {
         };
 
         try {
-            await new AWS.DynamoDB.DocumentClient()
+            await new AWS.DynamoDB.DocumentClient(new AWS.DynamoDB({region: 'us-east-1'}))
                 .put({
                     TableName: "Banklist",
                     Item: newBank,
@@ -30,7 +31,7 @@ export class BankRepository {
     async getBankById(id) {
         let bank;
         try {
-            const result = await new AWS.DynamoDB.DocumentClient()
+            const result = await new AWS.DynamoDB.DocumentClient(new AWS.DynamoDB({region: 'us-east-1'}))
                 .get({
                     TableName: "Banklist",
                     Key: { id },
@@ -53,7 +54,7 @@ export class BankRepository {
     async deleteBankById(id) {
         let bank;
         try {
-            const result = await new AWS.DynamoDB.DocumentClient()
+            const result = await new AWS.DynamoDB.DocumentClient(new AWS.DynamoDB({region: 'us-east-1'}))
                 .delete({
                     TableName: "Banklist",
                     Key: { id },
