@@ -2,13 +2,18 @@ import * as AWS from 'aws-sdk';
 import { CreateBankDto } from '../modules/bank/createBank.dto';
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
+import DynamoDB, { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
 export class BankRepository {
     constructor() {
-        AWS.config.update({region: 'us-east-1'});
     }
 
-
+AwsConnection()
+{
+    AWS.config.update(
+        {region: 'us-east-1'
+    });
+}
     async createBank(createBankDto: CreateBankDto) {
         const newBank = {
             id: uuid(),
@@ -17,7 +22,8 @@ export class BankRepository {
         };
 
         try {
-            await new AWS.DynamoDB.DocumentClient(new AWS.DynamoDB({region: 'us-east-1'}))
+            this.AwsConnection();
+            await new AWS.DynamoDB.DocumentClient()
                 .put({
                     TableName: "Banklist",
                     Item: newBank,
@@ -31,9 +37,11 @@ export class BankRepository {
     }
 
     async getBankById(id) {
+        
         let bank;
         try {
-            const result = await new AWS.DynamoDB.DocumentClient(new AWS.DynamoDB({region: 'us-east-1'}))
+            this.AwsConnection();
+            const result = await new AWS.DynamoDB.DocumentClient()
                 .get({
                     TableName: "Banklist",
                     Key: { id },
@@ -56,7 +64,8 @@ export class BankRepository {
     async deleteBankById(id) {
         let bank;
         try {
-            const result = await new AWS.DynamoDB.DocumentClient(new AWS.DynamoDB({region: 'us-east-1'}))
+            this.AwsConnection();
+            const result = await new AWS.DynamoDB.DocumentClient()
                 .delete({
                     TableName: "Banklist",
                     Key: { id },
